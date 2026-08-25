@@ -58,9 +58,11 @@ sprawl-repo/
 │   └── processed/
 │       └── cdo_sprawl_hazard_ready.csv    # Final scored & ranked 80-barangay matrix
 ├── docs/
-│   └── dataset_data_dictionary.md         # Column-level documentation & lineage
+│   ├── dataset_data_dictionary.md         # Column-level documentation & lineage
+│   └── RESEARCH_ANALYSIS_REPORT.md        # Comprehensive Academic Evaluation & Research Report
 ├── notebooks/
 │   └── 01_cdo_sprawl_hazard_pipeline.ipynb # Full pipeline, walked through with plots
+├── RESEARCH_ANALYSIS_REPORT.md            # Root copy of the comprehensive professor-grade report
 ├── figures/
 │   ├── cdo_risk_map.png                   # Choropleth of barangay risk tiers
 │   ├── top_risk_barangays.png             # Top 15 barangays by risk score
