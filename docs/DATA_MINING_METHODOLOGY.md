@@ -20,35 +20,39 @@ This document details the complete data mining lifecycle employed in the **Cagay
 ```mermaid
 flowchart TD
     subgraph P1["PHASE 1: ETL & Spatial Preprocessing"]
-        A1[Project CCHAIN Raw Tables] --> A2[PSGC Location Filtering: adm3_en == CDO]
-        A2 --> A3[Relational Joining on adm4_pcode]
-        A3 --> A4[WKT Polygon Parsing & Centroid Extraction]
+        A1["Project CCHAIN Raw Tables"] --> A2["PSGC Location Filtering: adm3_en == CDO"]
+        A2 --> A3["Relational Joining on adm4_pcode"]
+        A3 --> A4["WKT Polygon Parsing & Centroid Extraction"]
     end
 
     subgraph P2["PHASE 2: Feature Engineering & Transformation"]
-        A4 --> B1[Longitudinal Population CAGR Calculation]
-        A4 --> B2[Multi-Hazard Union: Flood100 + Landslide]
-        A4 --> B3[Relative Wealth Trend Extraction]
-        B1 & B2 & B3 --> B4[Min-Max Normalization: [0, 1]]
-        B4 --> B5[Social Vulnerability Inversion: 1 - W]
+        A4 --> B1["Longitudinal Population CAGR Calculation"]
+        A4 --> B2["Multi-Hazard Union: Flood100 + Landslide"]
+        A4 --> B3["Relative Wealth Trend Extraction"]
+        B1 --> B4["Min-Max Normalization: Range 0 to 1"]
+        B2 --> B4
+        B3 --> B4
+        B4 --> B5["Social Vulnerability Inversion: 1 - W"]
     end
 
     subgraph P3["PHASE 3: Exploratory & Diagnostic Mining"]
-        B5 --> C1[Bivariate Pearson Correlation Matrix]
-        B5 --> C2[4-Quadrant Hazard vs. Growth Matrix]
-        C1 & C2 --> C3[Dual Archetype Discovery: River Delta vs. Mountain Sprawl]
+        B5 --> C1["Bivariate Pearson Correlation Matrix"]
+        B5 --> C2["4-Quadrant Hazard vs. Growth Matrix"]
+        C1 --> C3["Dual Archetype Discovery: River Delta vs. Mountain Sprawl"]
+        C2 --> C3
     end
 
     subgraph P4["PHASE 4: Predictive Extrapolation"]
-        B1 --> D1[10-Year Exponential Compounding Model]
-        D1 --> D2[2030 Population & Risk Exposure Forecast]
+        B1 --> D1["10-Year Exponential Compounding Model"]
+        D1 --> D2["2030 Population & Risk Exposure Forecast"]
     end
 
     subgraph P5["PHASE 5: Prescriptive Multi-Criteria Scoring & Validation"]
-        B4 & B5 --> E1[Weighted Linear Combination Model: MCSRI]
-        E1 --> E2[Stratified Tier Discretization: Tiers 1, 2, 3]
-        E2 --> E3[Spearman Rank Correlation Sensitivity Testing]
-        E3 --> E4[Choropleth & Proportional Symbol Mapping]
+        B4 --> E1["Weighted Linear Combination Model: MCSRI"]
+        B5 --> E1
+        E1 --> E2["Stratified Tier Discretization: Tiers 1, 2, 3"]
+        E2 --> E3["Spearman Rank Correlation Sensitivity Testing"]
+        E3 --> E4["Choropleth & Proportional Symbol Mapping"]
     end
 ```
 
@@ -80,9 +84,9 @@ The raw data lake originates from **Project CCHAIN** and is stored across eight 
 ```
 
 ### 2.2 Relational Join Execution
-In [`src/pipeline.py`](../src/pipeline.py), the administrative boundary lookup table serves as the primary entity spine:
+In [`src/pipeline.py`](../src/pipeline.py), the administrative boundary lookup table serves as the primary entity spine joined on the common key $k = \mathtt{adm4\_pcode}$:
 
-$$\mathcal{D}_{\text{master}} = \mathcal{T}_{\text{location}} \bowtie_{\text{adm4\_pcode}} \mathcal{T}_{\text{hazard}} \bowtie_{\text{adm4\_pcode}} \mathcal{T}_{\text{buildings}} \bowtie_{\text{adm4\_pcode}} \mathcal{T}_{\text{landcover}} \bowtie_{\text{adm4\_pcode}} \mathcal{T}_{\text{wealth}} \bowtie_{\text{adm4\_pcode}} \mathcal{T}_{\text{population}}$$
+$$\mathcal{D}_{\text{master}} = \mathcal{T}_{\text{location}} \bowtie_{k} \mathcal{T}_{\text{hazard}} \bowtie_{k} \mathcal{T}_{\text{buildings}} \bowtie_{k} \mathcal{T}_{\text{landcover}} \bowtie_{k} \mathcal{T}_{\text{wealth}} \bowtie_{k} \mathcal{T}_{\text{population}}$$
 
 ### 2.3 Handling Temporal Heterogeneity
 A critical preprocessing decision in this pipeline is reconciling **static spatial baselines** with **longitudinal time series**:
@@ -94,7 +98,7 @@ Rather than synthetically imputing static surfaces across time, the data mining 
 ### 2.4 WKT Spatial Boundary & Geometric Parsing
 Spatial polygons representing official barangay boundaries are parsed from Well-Known Text (`WKT`) strings in `brgy_geography.csv`:
 
-$$\mathcal{P}_i = \text{WKT\_Load}(\text{geometry}_i)$$
+$$\mathcal{P}_i = \operatorname{WKT}(\text{geometry}_i)$$
 
 $$\mathbf{C}_i = \left( \frac{1}{6A} \sum_{j=0}^{n-1} (x_j + x_{j+1})(x_j y_{j+1} - x_{j+1} y_j), \; \frac{1}{6A} \sum_{j=0}^{n-1} (y_j + y_{j+1})(x_j y_{j+1} - x_{j+1} y_j) \right)$$
 
@@ -110,12 +114,12 @@ To measure demographic sprawl velocity over the 20-year WorldPop longitudinal tr
 $$\text{CAGR}_i = \left( \frac{P_{i, 2020}}{P_{i, 2000}} \right)^{\frac{1}{t_{\text{last}} - t_{\text{first}}}} - 1 = \left( \frac{P_{i, 2020}}{P_{i, 2000}} \right)^{\frac{1}{20}} - 1$$
 
 * **Zero-division Guard:** If $P_{i, 2000} \le 0$, the value is safely coerced to avoid undefined singularities:
-  $$\text{CAGR}_i = \text{fillna}\left(\text{CAGR}_i, 0\right)$$
+  $$\text{CAGR}_i = \operatorname{fillna}\left(\text{CAGR}_i, 0\right)$$
 
 ### 3.2 Multi-Hazard Physical Union
 Physical hazard exposure represents the joint percentage of barangay territory falling within critical 100-year flood inundation ($>1.5\text{m}$ depth) or severe slope failure zones:
 
-$$\text{HazardExposure}_i = \text{pct\_area\_flood\_hazard\_100yr\_high}_i + \text{pct\_area\_landslide\_hazard\_high}_i$$
+$$\text{HazardExposure}_i = \text{Flood100YrHigh}_i + \text{LandslideHigh}_i$$
 
 $$\text{HazardExposure}_i \in [0, 100]\%$$
 
