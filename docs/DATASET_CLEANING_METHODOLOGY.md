@@ -17,17 +17,17 @@
   "Gathering the Data"                      "Linking & Standardizing"                "Transforming into Decisions"
 --------------------------------------------------------------------------------------------------------
 • Sourced 7 official datasets:             • Merged all data by Barangay ID:        • Unified Risk Score (0 to 1):
-  - Satellite building counts (Google)       Combined maps, population history,       Weighted 4 core factors:
-  - Flood & landslide zones (NOAH)           and wealth into one unified table        - 40% Hazard Severity
-  - 20-year population growth (WorldPop)     for all 80 barangays in CDO.             - 30% Population Growth Speed
-  - Household wealth indices (Meta)                                                   - 15% Building Density
-                                           • Standardized Diverse Metrics:             - 15% Economic Vulnerability
-• Filtered specifically for:                 Converted incompatible units (counts,
-  80 administrative barangays of             percentages, index scores) onto a       • Actionable 3-Tier Categories:
-  Cagayan de Oro City.                       common 0 to 1 level playing field.       - Tier 3: Critical Danger (3 brgys)
-                                                                                      - Tier 2: Priority Mitigation (33)
-                                           • Vulnerability Inversion:                 - Tier 1: Monitoring (44)
-                                             Lower economic wealth was converted
+  - Building counts (Google)                 Combined maps, population history,       Weighted 4 core factors:
+  - Flood & landslide maps (NOAH)            and wealth into one unified table        - 40% Hazard Severity
+  - 20-yr population (WorldPop)              for all 80 barangays in CDO.             - 30% Population Growth Speed
+  - Wealth indices (Meta)                                                             - 15% Building Density
+  - Land cover rasters (ESA)               • Standardized Diverse Metrics:             - 15% Economic Vulnerability
+  - Boundary polygons (WKT GIS)              Converted incompatible units (counts,
+  - Barangay registry (PSGC)                 percentages, index scores) onto a       • Actionable 3-Tier Categories:
+                                             common 0 to 1 level playing field.       - Tier 3: Critical Danger (3 brgys)
+• Filtered specifically for:                                                          - Tier 2: Priority Mitigation (33)
+  80 administrative barangays of           • Vulnerability Inversion:                 - Tier 1: Monitoring (44)
+  Cagayan de Oro City.                       Lower economic wealth was converted
                                              into higher disaster vulnerability.    • Discovered 2 Key Risk Patterns:
                                                                                       1. Crowded river floodplains
                                                                                       2. Rapid sprawl onto steep hills
@@ -59,7 +59,7 @@ Here is a clear talk track in plain English:
 > *"Good day, everyone. To identify which communities in Cagayan de Oro face the greatest climate hazards, we implemented a straightforward dataset cleaning and preparation methodology:*
 > 
 > * **1. Extraction — Gathering the data:**  
->   *We pulled together 7 reliable data sources across all 80 barangays in Cagayan de Oro. This included satellite building data from Google, official flood and landslide maps from Project NOAH, 20 years of population records from WorldPop, and household wealth data.*
+>   *We pulled together 7 reliable data sources across all 80 barangays in Cagayan de Oro. This included satellite building data from Google, official flood and landslide maps from Project NOAH, 20 years of population records from WorldPop, household wealth data from Meta, land cover rasters from ESA, boundary polygons, and official PSGC location codes.*
 > 
 > * **2. Cleaning and Preparation — Linking and standardizing:**  
 >   *Because you cannot directly compare building counts to flood percentages or economic scores, we matched every dataset using official barangay ID codes and converted every metric onto a standardized 0-to-1 scale. We also accounted for social vulnerability: communities with lower economic wealth have fewer resources and take longer to recover from disaster damage.*
