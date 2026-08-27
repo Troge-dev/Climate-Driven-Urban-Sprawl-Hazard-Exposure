@@ -38,20 +38,6 @@
 
 ---
 
-## Recommended Visual Slide Design (PowerPoint / Canva / Google Slides)
-
-If you are designing this in presentation software, use a clean 3-card horizontal layout:
-
-| Card / Section | Layout Suggestion | Color Accent | Content Focus |
-|---|---|---|---|
-| **Header** | Bold sans-serif typography (*Inter*, *Poppins*, or *Montserrat*) | Dark Navy (`#1E293B`) | Main slide title and subtitle |
-| **Card 1: Extraction** | Left Column Card with bulleted source list | Ocean Blue (`#0284C7`) | What datasets were collected? |
-| **Card 2: Cleaning & Prep** | Center Column Card showing merge & scaling steps | Amber (`#D97706`) | How were metrics standardized? |
-| **Card 3: Interpretation** | Right Column Card with weights and tier badges | Crimson / Green (`#DC2626`) | How are the results used? |
-| **Bottom Banner** | Full-width summary box across the bottom | Slate Gray (`#F1F5F9`) | The practical outcome for the city |
-
----
-
 ## Presenter Script (60–90 Seconds)
 
 Here is a clear talk track in plain English:
