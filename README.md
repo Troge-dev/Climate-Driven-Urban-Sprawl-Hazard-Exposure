@@ -1,105 +1,188 @@
 # 🏙️ Cagayan de Oro City Urban Sprawl & Hazard Exposure Risk Engine
 
-> **A Spatial Risk-Scoring & Zoning-Priority Tool for the Cagayan de Oro City Local Government Unit (CDO LGU)**
-> *Developed for the CDO City Planning and Development Office (CPDO) & City Disaster Risk Reduction and Management Office (CDRRMO)*
-> *Pilot City: Cagayan de Oro City, Northern Mindanao, Philippines (80 Barangays | 2000–2023 CCHAIN Extracts)*
+> **A Spatial Risk-Scoring & Zoning-Priority Tool for the Cagayan de Oro City Local Government Unit (CDO LGU)**  
+> *Developed for the CDO City Planning and Development Office (CPDO) & City Disaster Risk Reduction and Management Office (CDRRMO)*  
+> *Pilot City: Cagayan de Oro City, Northern Mindanao, Philippines (80 Administrative Barangays | PSGC: `PH104305000` | 2000–2023 CCHAIN Extracts)*  
 >
-> 🎓 **Academic Fulfillment:** Data Mining and Applications — Laboratory Activity 1
+> 🎓 **Academic Fulfillment:** Data Mining and Applications (DMA) — Laboratory Activity 1  
 > 🌐 **Primary Dataset Source:** Project CCHAIN (Kaggle: [`thinkdatasci/project-cchain`](https://www.kaggle.com/datasets/thinkdatasci/project-cchain))
 
 ---
 
-> **Course & Data Attribution Notice**
-> - **Academic Requirement:** This repository is submitted in fulfillment of Data Mining and Applications, Laboratory Activity 1.
-> - **Data Provenance:** All hazard, building, land cover, wealth, and population data used here originate from **Project CCHAIN**, an open-access multi-partner initiative by Thinking Machines, EpiMetrics, Manila Observatory, and PACSII (funded by the Wellcome Trust & Lacuna Fund). 8 raw CCHAIN tables were filtered, joined, and engineered for the 80 barangays of Cagayan de Oro City.
+## 📌 Course & Data Attribution Notice
 
-## 1. Project Overview & CDO LGU Operational Problem Statement
+- **Academic Requirement:** This repository is submitted in fulfillment of **Data Mining and Applications (DMA) — Laboratory Activity 1**.
+- **Dataset Provenance:** All hazard, building, land cover, wealth, and demographic data originate from **Project CCHAIN**, an open-access multi-partner initiative by Thinking Machines, EpiMetrics, Manila Observatory, and PACSII (funded by Wellcome Trust & Lacuna Fund).
+- **Scope & Resolution:** 8 raw tabular and spatial datasets were extracted, cleaned, and unified into an analysis-ready matrix covering all 80 barangays of Cagayan de Oro City.
 
-Cagayan de Oro City has seen rapid population growth pushing settlement into its floodplains and landslide-prone uplands, yet the city government lacks a data-driven view of exactly **which barangays are absorbing the most growth in already-hazardous zones** — and whether it's lower-income communities bearing disproportionate risk.
+---
 
-Unlike disease-surveillance systems that react to case counts, this project addresses a **structural, slow-moving risk**: unmanaged urban sprawl quietly increasing the city's disaster vulnerability, barangay by barangay, year by year.
+## 1. Executive Summary & Operational Problem
 
-### The CDO LGU Risk-Prioritization Solution
+Cagayan de Oro City has experienced rapid demographic expansion that has pushed residential and economic settlements directly into high-risk floodplains and steep, landslide-prone uplands. Municipal decision-makers frequently lack an integrated, data-driven system to identify **where population growth coincides with physical hazards** and whether economically vulnerable populations are disproportionately impacted.
 
-This project builds a **barangay-level composite risk score** for CDO's 80 barangays by fusing:
-- 20 years of **population growth** trends (WorldPop, 2000–2020)
-- **Flood (5/25/100-yr) and landslide hazard exposure** (Project NOAH, 2015 snapshot)
-- **Building density and footprint size** (Google Open Buildings, 2023 snapshot)
-- **Relative wealth** trends (2016–2022) as an equity lens
+This project implements a **Multi-Criteria Spatial Risk Index (MCSRI)** that fuses 20 years of historical population growth, physical multi-hazard exposure, satellite-derived building footprints, and socioeconomic resilience trends into an actionable 3-tier zoning and resource-allocation matrix.
 
-This gives the CDO CPDO and CDRRMO a **ranked, defensible priority list** for zoning restriction, relocation planning, and infrastructure-hardening investment — instead of reactive, post-disaster response.
+### 4-Pillar Analytical Framework
 
-| Stage | Analytics Type | Key Deliverable for CDO LGU |
-|---|---|---|
-| 1. Baseline & GIS | Descriptive Analytics | Current hazard/building/land-cover profile per barangay |
-| 2. Growth × Hazard Overlap | Diagnostic Analytics | Barangays where growth and danger coincide, by wealth tier |
-| 3. 2030 Growth Projection | Predictive Analytics | Projected population exposure per barangay |
-| 4. Priority Tiering | Prescriptive Analytics | 3-tier zoning/mitigation action matrix |
+| Pillar | Analytics Type | Core Objective & Deliverable |
+| :--- | :--- | :--- |
+| **Pillar 1** | **Descriptive Analytics** | Baseline spatial and temporal profiles (20-yr population CAGR, physical hazard footprint, building density). |
+| **Pillar 2** | **Diagnostic Analytics** | 4-quadrant cross-tabulation and archetype discovery (Floodplain Inundation vs. Upland Mountain Sprawl). |
+| **Pillar 3** | **Predictive Analytics** | 2030 demographic extrapolation and compounding risk exposure modeling. |
+| **Pillar 4** | **Prescriptive Analytics** | Weighted Multi-Criteria Spatial Risk Index (MCSRI), 3-tier action matrix, and sensitivity validation. |
 
-## 2. Geographic Scope: Cagayan de Oro City's 80 Barangays
+---
 
-All 80 barangays (`PH104305000`) are covered, ranging from dense poblacion barangays near the city center to rural upland barangays like Tignapoloan and Besigan. Barangay boundary polygons (`brgy_geography.csv`) are parsed directly from CCHAIN's WKT geometry to render a true choropleth risk map — no GIS software required.
+## 2. Key Empirical Findings (80 CDO Barangays)
 
-## 3. Key Findings (from real CDO data)
+- **Citywide Population Velocity:** Total CDO population reached **752,064** (WorldPop 2020), exhibiting a **2.86% mean annual CAGR** from 2000 to 2020.
+- **Physical Hazard Exposure:** **30 of 80 barangays** have over 20% of their land area within high 100-year flood inundation ($>1.5\text{m}$) or critical landslide susceptibility zones.
+- **Identified Spatial Archetypes:**
+  1. **River Delta Inundation Archetype:** Core urban barangays (*Barangay 17 Poblacion*, *Consolacion*) with extreme building density and severe flood hazard.
+  2. **Upland Mountain Sprawl Archetype:** Rural peripheral barangays (*Tignapoloan*, *Besigan*) exhibiting rapid growth (**4.27% CAGR**) into high-landslide terrain coupled with low economic resilience ($RWI = 0.32$).
+- **Prescriptive Tier Breakdown:**
+  - 🔴 **Tier 3: Critical Intervention (3 Barangays | Score $\ge 0.60$):** Immediate zoning moratoria, relocation feasibility, and priority structural hardening.
+  - 🟡 **Tier 2: Priority Mitigation (33 Barangays | Score $0.33 - 0.60$):** Slope stabilization, drainage upgrades, and strict building permit enforcement.
+  - 🟢 **Tier 1: Continuous Monitoring (44 Barangays | Score $< 0.33$):** Routine environmental surveillance and baseline land use monitoring.
 
-- **752,064** people lived across CDO's 80 barangays as of the last WorldPop estimate (2020), growing at an average **2.86% CAGR** since 2000.
-- **30 of 80 barangays** have more than 20% of their land area classified as high flood or landslide hazard.
-- The three highest-risk barangays by composite score are **Barangay 17 (Poblacion)**, **Consolacion**, and **Tignapoloan** — a mix of dense urban-core and rural upland exposure, showing sprawl risk isn't just a downtown problem.
-- **Tignapoloan** stands out diagnostically: the fastest-growing barangay in the dataset (**4.27% CAGR**) combined with the lowest wealth index in the top-risk group (**0.32**) — a textbook case of low-income growth outpacing hazard-aware planning.
+---
 
-*(Full ranked table: `data/processed/cdo_sprawl_hazard_ready.csv`)*
+## 3. Visualizations & Analytical Artifacts
 
-## 4. Repository Directory Layout
+All figures are programmatically generated and exported to the [`figures/`](./figures/) directory:
 
-```
-sprawl-repo/
+| Artifact | Description |
+| :--- | :--- |
+| **[`cdo_risk_map.png`](./figures/cdo_risk_map.png)** | Choropleth risk map visualizing the 80 barangays categorized into Tier 1, 2, and 3 zones. |
+| **[`cdo_sprawl_points_map.png`](./figures/cdo_sprawl_points_map.png)** | Proportional symbol centroid map illustrating population growth velocity across hazard surfaces. |
+| **[`hazard_vs_growth.png`](./figures/hazard_vs_growth.png)** | 4-quadrant diagnostic scatter plot mapping Physical Hazard Exposure vs. 20-Year Population CAGR. |
+| **[`top_risk_barangays.png`](./figures/top_risk_barangays.png)** | Ranked horizontal bar chart displaying the Top 15 highest-risk barangays and score components. |
+
+---
+
+## 4. Repository Directory Structure
+
+```text
+Climate-Driven-Urban-Sprawl-Hazard-Exposure/
 ├── data/
-│   ├── cchain_raw/                        # 8 raw Project CCHAIN CSVs (location, hazards, buildings, etc.)
+│   ├── cchain_raw/                             # 8 raw Project CCHAIN CSV data tables
+│   │   ├── brgy_geography.csv                  # WKT geometric boundaries & spatial polygons
+│   │   ├── esa_worldcover.csv                  # Land cover classifications (built-up, tree, etc.)
+│   │   ├── google_open_buildings.csv           # Building counts and footprint area (m^2)
+│   │   ├── location.csv                        # PSGC administrative hierarchy metadata
+│   │   ├── project_noah_hazards.csv            # 5/25/100-yr flood & landslide hazard %
+│   │   ├── tm_relative_wealth_index.csv        # Micro-estimate socioeconomic wealth indices
+│   │   └── worldpop_population.csv             # Longitudinal annual population (2000–2020)
 │   └── processed/
-│       └── cdo_sprawl_hazard_ready.csv    # Final scored & ranked 80-barangay matrix
+│       └── cdo_sprawl_hazard_ready.csv         # Master scored and ranked 80-barangay dataset
 ├── docs/
-│   ├── dataset_data_dictionary.md         # Column-level documentation & lineage
-│   └── RESEARCH_ANALYSIS_REPORT.md        # Comprehensive Academic Evaluation & Research Report
+│   ├── DATA_MINING_METHODOLOGY.md              # Complete mathematical reference & pipeline architecture
+│   ├── DATASET_CLEANING_METHODOLOGY.md         # Non-technical stakeholder blueprint & presentation script
+│   ├── RESEARCH_ANALYSIS_REPORT.md             # Formal research paper, analytical Q&A, and defense guide
+│   └── dataset_data_dictionary.md              # Column-level schema lineage, units, and formulas
+├── figures/                                    # High-resolution output maps & diagnostic plots
+│   ├── cdo_risk_map.png                        # 3-Tier spatial choropleth map
+│   ├── cdo_sprawl_points_map.png               # Centroid-based sprawl point distribution
+│   ├── hazard_vs_growth.png                    # Diagnostic 4-quadrant scatter plot
+│   └── top_risk_barangays.png                  # Top 15 priority barangay ranking chart
 ├── notebooks/
-│   └── 01_cdo_sprawl_hazard_pipeline.ipynb # Full pipeline, walked through with plots
-├── RESEARCH_ANALYSIS_REPORT.md            # Root copy of the comprehensive professor-grade report
-├── figures/
-│   ├── cdo_risk_map.png                   # Choropleth of barangay risk tiers
-│   ├── top_risk_barangays.png             # Top 15 barangays by risk score
-│   └── hazard_vs_growth.png               # Diagnostic scatter: hazard vs. growth, colored by tier
+│   └── 01_cdo_sprawl_hazard_pipeline.ipynb      # Interactive step-by-step Jupyter notebook
 ├── src/
-│   ├── pipeline.py                        # Load -> merge -> score -> rank
-│   └── figures.py                         # Generates all chart/map outputs
-├── requirements.txt
-└── README.md
+│   ├── pipeline.py                             # Complete ETL, feature engineering, & scoring pipeline
+│   └── figures.py                              # Visualization & thematic cartography generation engine
+├── RESEARCH_ANALYSIS_REPORT.md                 # Root reference copy of comprehensive report
+├── requirements.txt                            # Python environment dependencies
+└── README.md                                   # Project landing page & documentation index
 ```
 
-## 5. Prescriptive CDO Zoning & Mitigation Decision Matrix
+---
 
-| Risk Score | Tier | Recommended CDO Action |
-|---|---|---|
-| < 0.33 | Tier 1: Monitor | Routine hazard monitoring; no zoning restriction needed |
-| 0.33 – 0.60 | Tier 2: Priority Mitigation | Drainage/slope-stabilization investment; building permit review in hazard-adjacent zones |
-| ≥ 0.60 | Tier 3: Critical Intervention | Zoning moratorium on new construction; relocation program feasibility study; priority infrastructure hardening |
+## 5. Documentation & Methodological References
 
-## 6. Quickstart
+| Document | Focus & Target Audience | Key Contents |
+| :--- | :--- | :--- |
+| **[`DATA_MINING_METHODOLOGY.md`](./docs/DATA_MINING_METHODOLOGY.md)** | Technical & Academic Defense | Mathematical formulation of CAGR, Multi-Hazard Union, Min-Max Normalization, Inverted Social Vulnerability, MCSRI formula, and Spearman rank sensitivity testing. |
+| **[`DATASET_CLEANING_METHODOLOGY.md`](./docs/DATASET_CLEANING_METHODOLOGY.md)** | Non-Technical & Slide Defense | 3-column slide blueprint for Slide 4 (Extraction $\rightarrow$ Cleaning $\rightarrow$ Interpretation) with a 60–90 second talk track and non-technical Q&A guide. |
+| **[`RESEARCH_ANALYSIS_REPORT.md`](./docs/RESEARCH_ANALYSIS_REPORT.md)** | Formal Evaluation & Faculty Review | 36KB comprehensive research monograph detailing the operational problem, 7–10 analytical questions across all 4 analytics tiers, empirical results, and policy recommendations. |
+| **[`dataset_data_dictionary.md`](./docs/dataset_data_dictionary.md)** | Engineering & Data Governance | Field-by-field definitions, data types, null handling, temporal resolutions, and source lineage. |
+
+---
+
+## 6. Mathematical Formulations Summary
+
+### 1. Compound Annual Growth Rate (Demographic Velocity)
+$$\text{CAGR}_i = \left( \frac{P_{i, 2020}}{P_{i, 2000}} \right)^{\frac{1}{20}} - 1$$
+
+### 2. Multi-Hazard Physical Union
+$$\text{HazardExposure}_i = \min\left(100, \; \text{Flood100YrHigh}_i + \text{LandslideHigh}_i\right)$$
+
+### 3. Inverted Social Vulnerability
+$$\widetilde{V}_i = 1 - \widetilde{\text{RWI}}_{\text{latest}, i} = 1 - \left(\frac{\text{RWI}_i - \min(\mathbf{RWI})}{\max(\mathbf{RWI}) - \min(\mathbf{RWI})}\right)$$
+
+### 4. Multi-Criteria Spatial Risk Index (MCSRI)
+$$\text{MCSRI}_i = 0.40 \cdot \widetilde{H}_i + 0.30 \cdot \widetilde{G}_i + 0.15 \cdot \widetilde{D}_i + 0.15 \cdot \widetilde{V}_i$$
+
+*Where $\widetilde{H}_i$, $\widetilde{G}_i$, $\widetilde{D}_i$, and $\widetilde{V}_i$ represent the min-max normalized scores for Hazard Exposure, Population Growth, Building Density, and Social Vulnerability.*
+
+---
+
+## 7. Quickstart & Pipeline Reproduction
+
+### Prerequisites
+Ensure Python 3.10+ is installed on your workstation.
 
 ```bash
+# 1. Clone the repository and navigate into the folder
+cd Climate-Driven-Urban-Sprawl-Hazard-Exposure
+
+# 2. Install dependencies
 pip install -r requirements.txt
-python src/pipeline.py     # builds data/processed/cdo_sprawl_hazard_ready.csv
-python src/figures.py      # builds figures/*.png
+
+# 3. Execute the full end-to-end data mining pipeline
+python src/pipeline.py
+
+# 4. Generate all figures, choropleth maps, and diagnostic charts
+python src/figures.py
+
+# 5. (Optional) Run the interactive walkthrough notebook
 jupyter notebook notebooks/01_cdo_sprawl_hazard_pipeline.ipynb
 ```
 
-## 7. Methodology Notes
+---
 
-- **Join key:** `adm4_pcode` (PSGC barangay code) links all CCHAIN tables; filtered via `location.csv` to `adm3_en == "Cagayan de Oro City"`.
-- **Why population/wealth are the time-series, not buildings/hazards/land cover:** the CCHAIN `google_open_buildings`, `project_noah_hazards`, and `esa_worldcover` tables are each single static snapshots (2023, 2015, and 2021 respectively — `freq: S`). Only `worldpop_population` (2000–2020) and `tm_relative_wealth_index` (2016–2022) are true yearly time series. The pipeline uses population CAGR as the growth signal and treats hazard/building/land-cover data as the current exposure baseline being grown into — not something that itself changes year to year in this dataset.
-- **Composite risk score:** `0.40 × hazard_exposure + 0.30 × population_growth + 0.15 × building_density + 0.15 × inverse_wealth`, each min-max normalized across CDO's 80 barangays. Weights are a defensible starting point (hazard and growth prioritized as the two irreducible drivers of the "sprawl into danger" story) — see `docs/dataset_data_dictionary.md` for a sensitivity-testing suggestion if your professor asks about weight justification.
-- **2030 projection:** each barangay's own 2000–2020 CAGR is compounded forward 10 years — a simple, transparent, defensible extrapolation method for an undergraduate lab activity (versus a black-box time-series model).
+## 8. Prescriptive Policy Action Matrix
 
-## 8. Data Source & Course Attribution
+```text
++-------------------+----------------------+--------------------------------------------------------------------+
+| Risk Score Range  | Intervention Tier    | Recommended Municipal Actions (CPDO / CDRRMO)                      |
++-------------------+----------------------+--------------------------------------------------------------------+
+| Score >= 0.60     | Tier 3: Critical     | • Impose strict zoning moratoria on new residential permits.       |
+| (3 Barangays)     | Intervention         | • Conduct structured relocation feasibility for riverbank zones.   |
+|                   |                      | • Immediate budget allocation for structural flood defenses.       |
++-------------------+----------------------+--------------------------------------------------------------------+
+| 0.33 <= Score < 0.60| Tier 2: Priority   | • Require geohazard clearance for all private construction.        |
+| (33 Barangays)    | Mitigation           | • Invest in upland slope stabilization and runoff retention basins.|
+|                   |                      | • Upgrade stormwater drainage networks in growing corridors.       |
++-------------------+----------------------+--------------------------------------------------------------------+
+| Score < 0.33      | Tier 1: Continuous   | • Maintain routine baseline satellite and GIS surveillance.        |
+| (44 Barangays)    | Monitoring           | • Preserve existing agricultural and forest land cover buffers.    |
+|                   |                      | • Standard building code compliance audits.                        |
++-------------------+----------------------+--------------------------------------------------------------------+
+```
 
-- **Course Fulfillment:** Data Mining and Applications — Laboratory Activity 1.
-- **Primary Dataset:** Project CCHAIN — Kaggle [`thinkdatasci/project-cchain`](https://www.kaggle.com/datasets/thinkdatasci/project-cchain)
-- **Citation:** Thinking Machines Data Science (2024). *Project CCHAIN Dataset: Open validated health, climate, environment, and socioeconomic data in 12 Philippine cities.* Kaggle. https://doi.org/10.34740/kaggle/ds/4918229
+---
+
+## 9. Academic Citation & Data Sources
+
+```bibtex
+@misc{thinkingmachines2024cchain,
+  title={Project CCHAIN: Climate Change, Health, and AI Network Dataset},
+  author={Thinking Machines Data Science and EpiMetrics and Manila Observatory and PACSII},
+  year={2024},
+  publisher={Kaggle},
+  url={https://www.kaggle.com/datasets/thinkdatasci/project-cchain},
+  doi={10.34740/kaggle/ds/4918229}
+}
+```
+
